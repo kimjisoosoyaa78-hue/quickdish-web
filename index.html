@@ -15,8 +15,8 @@
 <script src="js/app.js"></script>
 <script>
 if(new URLSearchParams(location.search).get('ok'))msg('ok','Cuenta creada. Ya puedes iniciar sesión.');
-if(me())location.replace('restaurantes.html');
+if(me())location.replace('home.html');
 $('#f').onsubmit=async e=>{e.preventDefault();const k=$('#u').value.trim().toLowerCase(),u=ls.get('qd_users',{})[k];
 if(!u||u.h!==await sha($('#p').value))return msg('e','Email/celular o contraseña incorrectos.');
-ss.set('qd_user',{email:k,nombre:u.nombre});location.href='restaurantes.html'}
+ss.set('qd_user',{email:k,nombre:u.nombre});location.href='home.html'}
 </script></body></html>

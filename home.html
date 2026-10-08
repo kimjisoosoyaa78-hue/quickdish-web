@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inicio · QuickDish</title><link rel="icon" href="img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body class="home">
+<div id="nav"></div><div class="wrap hw"><h1>ORDENAR</h1><h3 class="st2">Restaurantes cerca de usted</h3><div class="hg" id="r1"></div><div class="hh"><h3 class="st2">Recomendaciones para ti</h3><a href="restaurantes.html">VER TODO</a></div><div class="hg" id="r2"></div></div>
+<script src="js/app.js"></script>
+<script>
+nav('Inicio');
+const F=ls.get(key('favs'),[]),D=['1,5 km','2,1 km','0,8 km','3,0 km'];
+const card=(id,href,img,n,pr,i)=>`<a class="hc" href="${href}"><img src="img/home/${img}" alt="${n}"><button class="fv ${F.includes(id)?'on':''}" onclick="fav(event,'${id}',this)">${F.includes(id)?'♥':'♡'}</button><b>${n}</b><small>★ 4.5 (250+ review)</small><div class="pr">${pr}<span>${D[i%4]}</span></div></a>`;
+const IM={kfc:'pollo.png',mc:'burger.jpg',bk:'burgerfries.jpg',dom:'pizza.jpg'};
+$('#r1').innerHTML=['kfc','mc','bk','dom'].map((id,i)=>{const r=R.find(x=>x.id==id),p=r.p.map(x=>x[2]);return card(id,'menu.html?r='+id,IM[id],r.n,cop(Math.min(...p))+' - '+cop(Math.max(...p)),i)}).join('');
+const REC=[['kfc','kfc1','pollo.png'],['dom','dom2','pizza.jpg'],['bam','bam5','donuts.jpg'],['bk','bk1','burgerfries.jpg']];
+$('#r2').innerHTML=REC.map(([rid,pid,img],i)=>{const r=R.find(x=>x.id==rid),p=r.p.find(x=>x[0]==pid);return card(pid,'menu.html?r='+rid,img,p[1],cop(p[2]),i+1)}).join('');
+function fav(e,id,b){e.preventDefault();e.stopPropagation();let f=ls.get(key('favs'),[]);f=f.includes(id)?f.filter(x=>x!=id):[...f,id];ls.set(key('favs'),f);b.classList.toggle('on',f.includes(id));b.textContent=f.includes(id)?'♥':'♡'}
+</script></body></html>

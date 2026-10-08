@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chat · QuickDish</title><link rel="icon" href="img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body class="pale">
+<div id="nav"></div><div class="wrap"><a class="back" href="rastrear.html">‹ Volver al rastreo</a><h1 id="t"></h1><div class="chat"><div class="msgs" id="m"></div><form class="send" id="f"><input id="i" autocomplete="off" placeholder="Escribe un mensaje..."><button class="btn">Enviar</button></form></div><p class="note">Chat simulado para la práctica: las respuestas son automáticas.</p></div>
+<script src="js/app.js"></script>
+<script>
+nav('Pedidos');
+const con=new URLSearchParams(location.search).get('con')==='restaurante'?'restaurante':'domiciliario';
+const T={domiciliario:['🛵 Chat con el domiciliario','¡Hola! Soy Carlos, tu domiciliario. Ya voy en camino con tu pedido 🛵'],restaurante:['🍽 Chat con QuickDish','¡Hola! Te habla el equipo de QuickDish. ¿En qué podemos ayudarte con tu pedido?']};
+$('#t').textContent=T[con][0];
+const hora=()=>new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+const K=key('chat_'+con);let H=ls.get(K,null);if(!H){H=[{de:'ellos',t:T[con][1],h:hora()}];ls.set(K,H)}
+function pintar(){const m=$('#m');m.innerHTML='';H.forEach(x=>{const d=document.createElement('div');d.className='bb '+x.de;d.textContent=x.t;const s=document.createElement('small');s.textContent=x.h;d.appendChild(s);m.appendChild(d)});m.scrollTop=m.scrollHeight}
+function resp(t){t=t.toLowerCase();
+if(/\b(gracias|vale|ok)\b/.test(t))return '¡Con gusto! 😊';
+if(/d[oó]nde|ubica/.test(t))return con=='domiciliario'?'Voy por la Carrera 10, a unos 10 minutos de tu dirección.':'Tu pedido sale del punto más cercano a tu zona.';
+if(/cu[aá]nto|demor|tiempo|llega/.test(t))return 'Calculo unos 10 a 15 minutos 🕒';
+if(/direcci[oó]n|cambi/.test(t))return 'Escríbeme la nueva dirección y la confirmo si el pedido aún no ha salido.';
+if(/cancel/.test(t))return 'Puedes cancelar desde la pantalla Rastrear pedido, mientras no haya salido.';
+if(/hola|buenas/.test(t))return '¡Hola! ¿En qué te ayudo?';
+return 'Entendido, lo tengo en cuenta 👍'}
+$('#f').onsubmit=e=>{e.preventDefault();const t=$('#i').value.trim();if(!t)return;$('#i').value='';H.push({de:'yo',t,h:hora()});ls.set(K,H);pintar();
+setTimeout(()=>{H.push({de:'ellos',t:resp(t),h:hora()});ls.set(K,H);pintar()},900)};
+pintar()
+</script></body></html>
