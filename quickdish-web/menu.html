@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Menú · QuickDish</title><link rel="icon" href="img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body class="pale">
+<div id="nav"></div><div class="wrap"><div class="ban" id="b"></div><div id="l"></div><a class="bar" id="bar" href="carrito.html" style="display:none"></a></div>
+<script src="js/app.js"></script>
+<script>
+const r=R.find(x=>x.id==new URLSearchParams(location.search).get('r'))||R[0];
+function draw(){nav('Restaurantes');const c=cart().i,t=totals(),mine=t.r&&t.r.id==r.id;
+$('#b').style.background=r.c;$('#b').innerHTML=`<span>${r.e}</span><div>${r.n}<br><small>${r.t} · ⏱ ${r.m}</small></div>`;
+$('#l').innerHTML=r.p.map(p=>`<div class="it"><span class="e">${p[3]}</span><div><b>${p[1]}</b><u>${cop(p[2])}</u></div>${c[p[0]]&&mine?`<div class="ct"><button onclick="rem('${p[0]}');draw()">−</button><b>${c[p[0]]}</b><button onclick="add('${r.id}','${p[0]}');draw()">+</button></div>`:`<button class="btn" onclick="add('${r.id}','${p[0]}');draw()">Agregar</button>`}</div>`).join('');
+$('#bar').style.display=t.n?'flex':'none';$('#bar').innerHTML=`<span>Ver carrito (${t.n})</span><span>${cop(t.sub)}</span>`}
+draw()
+</script></body></html>

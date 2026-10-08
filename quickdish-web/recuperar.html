@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Recuperar contraseña · QuickDish</title><link rel="icon" href="img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body class="pg" data-public>
+<div class="nav"><a class="logo" href="index.html"><i></i>QuickDish</a></div>
+<main style="max-width:600px;margin:0 auto;padding:10px 24px 60px;text-align:center"><h1 style="font-size:40px">RECUPERAR CONTRASEÑA</h1><p style="margin:6px 0 24px">RECUPEREMOS TU CUENTA</p>
+<form id="f" style="text-align:left"><div class="err" id="e"></div><div class="ok" id="ok"></div>
+<label class="lab">Email o celular</label><input class="in" id="u" required>
+<div class="row2"><div><label class="lab">Usuario</label><input class="in" id="n" required></div>
+<div><label class="lab">Captcha</label><div class="cap"><b id="c">00000</b></div><label style="font-size:13px"><input type="checkbox" id="h"> I am Human</label></div></div>
+<button class="btn" style="width:100%;margin-top:14px;background:#fff;color:#000">ENVIAR CODIGO</button></form>
+<p class="lk">No tienes cuenta? <a href="registro.html"><b>Registrarse</b></a> · <a href="index.html">Volver</a></p></main>
+<script src="js/app.js"></script>
+<script>
+$('#c').textContent=String(Math.floor(10000+Math.random()*90000));
+$('#f').onsubmit=e=>{e.preventDefault();if(!$('#h').checked)return msg('e','Confirma que eres humano.');
+const u=ls.get('qd_users',{})[$('#u').value.trim().toLowerCase()];
+if(!u)return msg('e','No encontramos una cuenta con ese email o celular.');
+msg('ok','Código enviado (simulado). Cuando la app se conecte a una base de datos real, llegará a tu correo.')}
+</script></body></html>

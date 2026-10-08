@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crear cuenta · QuickDish</title><link rel="icon" href="img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body class="reg" data-public>
+<main class="split">
+<div class="lft"><a class="logo" href="index.html"><i></i>QuickDish</a><h1>¿Nuevo por aqui?</h1><div class="big">🛵</div></div>
+<form class="card" id="f"><h1>Crear Cuenta</h1><p style="margin:6px 0 18px;font-size:14px">Únase hoy a QuickDish</p>
+<div class="err" id="e"></div>
+<label class="lab">Nombre Completo</label><input class="ul" id="n" required>
+<label class="lab">Fecha de nacimiento</label><input class="ul" id="d" type="date" required>
+<label class="lab">Identificación</label><input class="ul" id="i" required>
+<label class="lab">Email / Celular</label><input class="ul" id="u" required>
+<label class="lab">Contraseña (mínimo 6 caracteres)</label><input class="ul" id="p" type="password" required>
+<label class="lab">Confirmar contraseña</label><input class="ul" id="p2" type="password" required>
+<button class="btn g" style="width:100%;margin-top:10px">REGISTRARSE</button>
+<p class="lk">¿Ya tiene una cuenta? <a href="index.html"><b>Acceder</b></a></p></form></main><div class="foot"><span>▙LJD Codeworks · Powered By</span><span>Política de Privacidad · Cookies</span></div>
+<script src="js/app.js"></script>
+<script>
+$('#f').onsubmit=async e=>{e.preventDefault();const k=$('#u').value.trim().toLowerCase(),us=ls.get('qd_users',{});
+if($('#p').value.length<6)return msg('e','La contraseña debe tener mínimo 6 caracteres.');
+if($('#p').value!==$('#p2').value)return msg('e','Las contraseñas no coinciden.');
+if(us[k])return msg('e','Ya existe una cuenta con ese email o celular.');
+us[k]={nombre:$('#n').value.trim(),fecha:$('#d').value,id:$('#i').value.trim(),h:await sha($('#p').value)};
+ls.set('qd_users',us);location.href='index.html?ok=1'}
+</script></body></html>

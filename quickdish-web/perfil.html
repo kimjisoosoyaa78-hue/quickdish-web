@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mi cuenta · QuickDish</title><link rel="icon" href="img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body class="">
+<div class="mnav" id="nav"></div><div class="dash"><div class="sb"><a class="logo" href="restaurantes.html"><i></i>QuickDish</a><a class="a">▦ Datos personales</a><a href="restaurantes.html">🍽 Restaurantes</a><a href="rastrear.html">🛵 Pedidos</a><a href="carrito.html">🧺 Mi carrito</a><a>🧾 Facturación</a><a>👛 Metodos de pago</a><a>⚙ Configuración</a><a href="#" onclick="salir()">↪ Cerrar Sesión</a></div>
+<main><div class="ok" id="ok"></div><div style="text-align:right"><a href="#" id="s" style="color:#999;font-weight:700;font-size:20px;text-decoration:none">GUARDAR CAMBIOS</a></div>
+<label class="dl">Nombre Completo</label><input class="uf" id="n"><label class="dl">Fecha de nacimiento</label><input class="uf" id="d" type="date"><label class="dl">Identificación</label><input class="uf" id="i">
+<label class="dl">Email / Celular</label><input class="uf" id="u" disabled><label class="dl">Nueva contraseña (opcional)</label><input class="uf" id="p" type="password">
+<label class="dl" style="margin-top:34px">DIRECCIONES</label><div class="dir t">Casa<br>Calle 20 # 13E - 44 / Barrio Candelaria</div><div class="dir">Trabajo<br>Calle 9 # 11A - 5 / Barrio Candelaria</div><div id="ex"></div><div class="dir" style="text-align:center;font-style:italic;cursor:pointer" onclick="nueva()">Añadir dirección</div></main>
+<aside><b>RESTAURANTES DESTACADOS</b><p style="margin:14px 0 26px;font-size:22px;font-weight:800">KFC &nbsp; <span style="background:#e51b24;color:#ffc72c;padding:6px 12px;border-radius:8px">M</span></p><b>CUPONES</b><div style="margin-top:14px"><div class="cp t"><b>EMPANADAS BAMBI</b><br>10% DE DESCUENTO</div><div class="cp"><b>ITALIANISIMO</b><br>15% DE DESCUENTO</div><div class="cp"><b>ENVÍO GRATIS</b><br>Compras mayores a $20.000</div></div></aside></div>
+<script src="js/app.js"></script>
+<script>
+nav('Mi cuenta');const us=ls.get('qd_users',{}),k=me().email,u=us[k]||{};
+$('#n').value=u.nombre||'';$('#d').value=u.fecha||'';$('#i').value=u.id||'';$('#u').value=k;
+const A=()=>ls.get(key('dirs'),[]);const pintar=()=>$('#ex').innerHTML=A().map(a=>`<div class="dir">${a}</div>`).join('');pintar();
+function nueva(){const t=prompt('Escribe la nueva dirección:');if(t&&t.trim()){ls.set(key('dirs'),[...A(),t.trim()]);pintar()}}
+$('#s').onclick=async e=>{e.preventDefault();u.nombre=$('#n').value.trim()||u.nombre;u.fecha=$('#d').value;u.id=$('#i').value.trim();
+if($('#p').value){if($('#p').value.length<6)return alert('La contraseña debe tener mínimo 6 caracteres.');u.h=await sha($('#p').value)}
+us[k]=u;ls.set('qd_users',us);ss.set('qd_user',{email:k,nombre:u.nombre});msg('ok','Cambios guardados.')}
+</script></body></html>

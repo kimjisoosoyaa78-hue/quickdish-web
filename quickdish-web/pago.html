@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pago · QuickDish</title><link rel="icon" href="img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body class="pale">
+<div id="nav"></div><div class="wrap"><h1>Pago</h1><div id="c"></div></div>
+<script src="js/app.js"></script>
+<script>
+const M=[['credito','💳 Tarjeta de crédito'],['debito','💳 Tarjeta débito'],['nequi','📱 Nequi'],['daviplata','📱 Daviplata'],['pse','🏦 PSE (transferencia bancaria)'],['efectivo','💵 Efectivo contra entrega']];
+let m='credito';nav('');const t=totals();
+if(!t.n){$('#c').innerHTML='<div class="box">No tienes productos en el carrito. <a href="restaurantes.html"><b>Ver restaurantes</b></a></div>'}
+else draw();
+function draw(){const tj=m=='credito'||m=='debito';
+$('#c').innerHTML=`<div class="two"><div><div class="box"><small>Total a pagar</small><div class="tot" style="color:#f4620a">${cop(t.tot)}</div></div><b>Método de pago</b><div style="margin-top:10px">${M.map(x=>`<div class="met ${m==x[0]?'on':''}" onclick="m='${x[0]}';draw()"><span>${x[1]}</span><span>${m==x[0]?'◉':'○'}</span></div>`).join('')}</div></div>
+<div><div class="err" id="e"></div>${tj?`<div class="box"><label class="lab">Número de la tarjeta</label><input class="fi" id="num" inputmode="numeric" placeholder="0000 0000 0000 0000"><label class="lab">Nombre en la tarjeta</label><input class="fi" id="nom"><div class="row2"><div><label class="lab">Vence (MM/AA)</label><input class="fi" id="ven" placeholder="MM/AA"></div><div><label class="lab">CVV</label><input class="fi" id="cvv" type="password" inputmode="numeric"></div></div></div>`:''}
+${m=='nequi'||m=='daviplata'?'<div class="box"><label class="lab">Número de celular</label><input class="fi" id="cel" inputmode="numeric" placeholder="3001234567"></div>':''}
+${m=='pse'?'<div class="box">Al confirmar te llevaríamos al portal de tu banco para autorizar el pago.</div>':''}${m=='efectivo'?'<div class="box">Pagas en efectivo cuando llegue el domiciliario.</div>':''}
+<p style="font-size:12px;margin:8px 0 14px">Pago simulado para la práctica: no se cobra nada ni se guardan datos de tarjeta.</p>
+<button class="btn" style="width:100%" onclick="pagar()">Pagar ${cop(t.tot)}</button></div></div>`;
+if(tj){$('#num').oninput=e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim();
+$('#ven').oninput=e=>{const d=e.target.value.replace(/\D/g,'').slice(0,4);e.target.value=d.length>2?d.slice(0,2)+'/'+d.slice(2):d}}}
+function pagar(){const tj=m=='credito'||m=='debito';
+if(tj){if($('#num').value.replace(/\s/g,'').length<15)return msg('e','El número de la tarjeta está incompleto.');
+if($('#nom').value.trim().length<3)return msg('e','Escribe el nombre como aparece en la tarjeta.');
+if(!/^(0[1-9]|1[0-2])\/\d{2}$/.test($('#ven').value))return msg('e','La fecha debe tener el formato MM/AA.');
+if($('#cvv').value.length<3)return msg('e','El CVV debe tener 3 o 4 números.')}
+if((m=='nequi'||m=='daviplata')&&$('#cel').value.length!=10)return msg('e','El celular debe tener 10 dígitos.');
+const o={n:String(Math.floor(1000+Math.random()*9000)),r:t.r.n,tot:t.tot,met:M.find(x=>x[0]==m)[1],items:t.L.map(x=>x.q+' '+x.p[1]).join(', '),paso:0};
+ls.set(key('order'),o);saveCart({r:null,i:{}});nav('');
+$('#c').innerHTML=`<div class="box" style="text-align:center;max-width:520px;margin:0 auto"><p style="font-size:70px">✅</p><h2>¡Pedido confirmado!</h2><p style="margin:14px 0">Orden #${o.n} · ${o.r}<br>Pago: ${o.met}<br><b>Total: ${cop(o.tot)}</b></p><a class="btn" href="rastrear.html">Rastrear pedido</a><p class="lk"><a href="restaurantes.html">Volver a restaurantes</a></p></div>`}
+</script></body></html>

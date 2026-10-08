@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carrito · QuickDish</title><link rel="icon" href="img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body class="pale">
+<div id="nav"></div><div class="wrap"><h1>Mi carrito</h1><div id="c"></div></div>
+<script src="js/app.js"></script>
+<script>
+function draw(){nav('');const t=totals();
+if(!t.n){$('#c').innerHTML='<div class="box" style="text-align:center"><p style="font-size:60px">🧺</p><p style="margin:10px 0 18px">Tu carrito está vacío</p><a class="btn" href="restaurantes.html">Ver restaurantes</a></div>';return}
+$('#c').innerHTML=`<div class="two"><div><p style="font-weight:700;margin-bottom:12px">Pedido en ${t.r.n}</p>${t.L.map(x=>`<div class="it"><span class="e">${x.p[3]}</span><div><b>${x.p[1]}</b><u>${cop(x.p[2]*x.q)}</u></div><div class="ct"><button onclick="rem('${x.p[0]}');draw()">−</button><b>${x.q}</b><button onclick="add('${t.r.id}','${x.p[0]}');draw()">+</button></div></div>`).join('')}</div>
+<div><div class="box"><b>Dirección de entrega</b><p style="margin-top:6px;font-size:14px">🏠 CASA · Calle 20 # 13E - 44 / barrio candelaria</p></div>
+<div class="box"><div class="ln2"><span>Subtotal</span><span>${cop(t.sub)}</span></div><div class="ln2"><span>Envío</span><span>${t.env?cop(t.env):'Gratis'}</span></div>${t.env?'<small>Envío gratis en compras desde $20.000</small>':''}<div class="ln2 tot"><span>Total</span><span>${cop(t.tot)}</span></div></div>
+<a class="btn" style="width:100%;text-align:center" href="pago.html">Ir a pagar</a></div></div>`}
+draw()
+</script></body></html>

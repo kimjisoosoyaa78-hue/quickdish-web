@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Restaurantes · QuickDish</title><link rel="icon" href="img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head>
+<body class="pale">
+<div id="nav"></div><div class="wrap"><h1>Restaurantes</h1><div class="grid" id="g"></div></div>
+<script src="js/app.js"></script>
+<script>
+nav('Restaurantes');
+$('#g').innerHTML=R.map(r=>`<a class="rc" href="menu.html?r=${r.id}"><i style="background:${r.c}">${r.e}</i><div><b>${r.n}</b><small>${r.t}</small><small>⏱ ${r.m} · Desde ${cop(Math.min(...r.p.map(p=>p[2])))}</small></div></a>`).join('')
+</script></body></html>
